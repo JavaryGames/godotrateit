@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.View;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class GodotRateIt extends Godot.SingletonBase {
 
@@ -24,10 +26,39 @@ public class GodotRateIt extends Godot.SingletonBase {
 	}
 
 	public GodotRateIt(Activity p_activity) {
-		registerClass("GodotRateIt", new String[] {"rate", "get_version"});
+		registerClass("GodotRateIt", new String[] {"rate", "get_version", "ask_and_rate"});
 
 		activity = p_activity;
 		context = activity.getApplicationContext();
+	}
+
+	public void ask_and_rate(final String message, final String positive_button_text, final String negative_button_text) {
+		final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+					case DialogInterface.BUTTON_POSITIVE: // Google Play
+						rate("", "", "");
+						break;
+
+					case DialogInterface.BUTTON_NEGATIVE: // Cancelar
+						// No hacer nada
+						break;
+				}
+				dialog.dismiss();
+
+			}
+		};
+		activity.runOnUiThread(new Runnable() {
+			public void run() {
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setMessage(message)
+						.setPositiveButton(positive_button_text, dialogClickListener)
+						.setNegativeButton(negative_button_text, dialogClickListener)
+						.show();
+			}
+		});
 	}
 
 	public void rate(final String url_prefix, final String url_prefix_fallback, final String id_format) {
