@@ -1,15 +1,16 @@
 # godot-rateit
 
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg?longCache=true&style=flat-square)](https://github.com/xsellier/godotrateit)
+[![Platform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg?longCache=true&style=flat-square)](https://github.com/jahd2602/godotrateit)
 [![Godot Engine](https://img.shields.io/badge/GodotEngine-3.0-orange.svg?longCache=true&style=flat-square)](https://github.com/godotengine/godot)
-[![LICENCE](https://img.shields.io/badge/License-MIT-green.svg?longCache=true&style=flat-square)](https://github.com/xsellier/godotrateit/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/License-MIT-green.svg?longCache=true&style=flat-square)](https://github.com/xsellier/godotrateit/blob/master/LICENSE)
 
-Allows you to open the google play store on your application in order to rate it.
+Allows you to open the google play or app store on your application in order to rate it.
 
 # Usage
 
 
-## Loading the module
+## Loading the module for Android (iOS auto-loads it)
 
 Edit `engine.cfg` and add an `android` part as following:
 
@@ -33,9 +34,8 @@ func _ready():
     godot_rateit = Engine.get_singleton('GodotRateIt')
 
 func rate_it():
-  if OS.get_name() == 'Android' and godot_rateit != null:
-    print('Debug, rating the app %s' % [ godot_rateit.get_version()])
-    godot_rateit.ask_and_rate('Rate?', 'Yes', 'No')
+  if godot_rateit != null:
+    godot_rateit.ask_and_rate('Rate?', 'Yes', 'No', '' if OS.get_name() == 'Android' else '1234567890')
 ```
 
 # License

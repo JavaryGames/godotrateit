@@ -32,14 +32,14 @@ public class GodotRateIt extends Godot.SingletonBase {
 		context = activity.getApplicationContext();
 	}
 
-	public void ask_and_rate(final String message, final String positive_button_text, final String negative_button_text) {
+	public void ask_and_rate(final String message, final String positive_button_text, final String negative_button_text, final String app_id) {
 		final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 					case DialogInterface.BUTTON_POSITIVE: // Google Play
-						rate("", "", "");
+						rate("", "", "", app_id);
 						break;
 
 					case DialogInterface.BUTTON_NEGATIVE: // Cancelar
@@ -61,7 +61,7 @@ public class GodotRateIt extends Godot.SingletonBase {
 		});
 	}
 
-	public void rate(final String url_prefix, final String url_prefix_fallback, final String id_format) {
+	public void rate(final String url_prefix, final String url_prefix_fallback, final String id_format, final String app_id) {
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
 				String url_prefix_tmp = "market://details";
@@ -80,7 +80,7 @@ public class GodotRateIt extends Godot.SingletonBase {
 					id_format_tmp = id_format;
 				}
 
-				rateApp(url_prefix_tmp, url_prefix_fallback_tmp, id_format_tmp);
+				rateApp(url_prefix_tmp, url_prefix_fallback_tmp, id_format_tmp, app_id);
 			}
 		});
 	}
@@ -99,19 +99,19 @@ public class GodotRateIt extends Godot.SingletonBase {
 		return version;
 	}
 
-	public void rateApp(final String url_prefix, final String url_prefix_fallback, final String id_format) {
+	public void rateApp(final String url_prefix, final String url_prefix_fallback, final String id_format, final String app_id) {
 		try {
-			Intent rateIntent = rateIntentForUrl(url_prefix, id_format);
+			Intent rateIntent = rateIntentForUrl(url_prefix, id_format, app_id);
 			activity.startActivity(rateIntent);
 		} catch (ActivityNotFoundException e) {
-			Intent rateIntent = rateIntentForUrl(url_prefix_fallback, id_format);
+			Intent rateIntent = rateIntentForUrl(url_prefix_fallback, id_format, app_id);
 
 			activity.startActivity(rateIntent);
 		}
 	}
 
-	private Intent rateIntentForUrl(final String url, final String id_format) {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?%s=%s", url, id_format, activity.getPackageName())));
+	private Intent rateIntentForUrl(final String url, final String id_format, final String app_id) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?%s=%s", url, id_format, app_id.equals("")?activity.getPackageName():app_id)));
 		int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
 
 		if (Build.VERSION.SDK_INT >= 21) {
