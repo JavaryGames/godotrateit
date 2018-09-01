@@ -16,6 +16,14 @@ GodotRateIt::~GodotRateIt() {
 }
 
 void GodotRateIt::ask_and_rate(const String &message, const String &positive_button_text, const String &negative_button_text, const String &app_id) {
+    do_ios_rate(app_id);
+}
+
+void GodotRateIt::rate(const String &url_prefix, const String &url_prefix_fallback, const String &id_format, const String &app_id) {
+    do_ios_rate(app_id);
+}
+
+void GodotRateIt::do_ios_rate(const String &app_id) {
     if (@available(iOS 10.3, *)) {
         [SKStoreReviewController requestReview];
         return;
@@ -33,5 +41,6 @@ void GodotRateIt::ask_and_rate(const String &message, const String &positive_but
 }
 
 void GodotRateIt::_bind_methods() {
-    CLASS_DB::bind_method("ask_and_rate",&GodotRateIt::ask_and_rate);
+    CLASS_DB::bind_method("ask_and_rate", &GodotRateIt::ask_and_rate);
+    CLASS_DB::bind_method("rate", &GodotRateIt::rate);
 }
