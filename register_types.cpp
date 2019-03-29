@@ -1,10 +1,10 @@
-#include <version_generated.gen.h>
+#include <core/version_generated.gen.h>
 
 #if VERSION_MAJOR == 3
 #include <core/class_db.h>
 #include <core/engine.h>
 #else
-#include "object_type_db.h"
+#include "core/class_db.h"
 #include "core/globals.h"
 #endif
 
