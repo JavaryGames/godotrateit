@@ -4,7 +4,7 @@ def can_build(plat):
 
 def configure(env):
     if env["platform"] == "android":
+        env.disable_module()
         return
         env.android_add_java_dir("android/src")
 
-        env.disable_module()
