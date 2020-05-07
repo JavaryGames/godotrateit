@@ -101,7 +101,7 @@ public class GodotRateIt extends Godot.SingletonBase {
 
 	public void rateApp(final String url_prefix, final String url_prefix_fallback, final String id_format, final String app_id) {
 		try {
-			Intent rateIntent = rateIntentForUrl(url_prefix, id_format, app_id);
+			Intent rateIntent = rateIntentForUrl(url_prefix, id_format, "");
 			activity.startActivity(rateIntent);
 		} catch (ActivityNotFoundException e) {
 			Intent rateIntent = rateIntentForUrl(url_prefix_fallback, id_format, app_id);
